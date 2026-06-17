@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import os
 
 def min_max_scaling(mileage):
     min_val = mileage.min()
@@ -47,5 +48,8 @@ normalized_mileage, diff, min_val = min_max_scaling(mileage)
 
 norm_theta0, norm_theta1 = calculate_theta(normalized_mileage, price, m, 0.1, 1000)
 theta0, theta1 = denormalize_theta(norm_theta0, norm_theta1, diff, min_val)
+
+if not os.path.exists('model'):
+    os.makedirs("model")
 
 pd.DataFrame({'theta0': [theta0], 'theta1': [theta1]}).to_csv('model/default.csv', index=False)
