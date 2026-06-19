@@ -19,6 +19,7 @@ def calculate_theta(mileage, price, m, learning_rate, iterations):
     theta0 = 0
     theta1 = 0
     history = {'theta0': [theta0], 'theta1': [theta1]}
+    # pure descent
     for _ in range(iterations):
         sum_error_0 = 0
         sum_error_1 = 0
@@ -33,6 +34,22 @@ def calculate_theta(mileage, price, m, learning_rate, iterations):
         history['theta0'].append(theta0)
         history['theta1'].append(theta1)
     return theta0, theta1, history
+
+    # coordinate descent
+    # for _ in range(iterations):
+    #     sum_error_0 = 0
+    #     sum_error_1 = 0
+    #     for i in range(m):
+    #         error = estimate_price(mileage[i], theta0, theta1) - price[i]
+    #         sum_error_0 += error
+    #     theta0 = theta0 - learning_rate * (1 / m) * sum_error_0
+    #     for i in range(m):
+    #         error = estimate_price(mileage[i], theta0, theta1) - price[i]
+    #         sum_error_1 += error * mileage[i]
+    #     theta1 = theta1 - learning_rate * (1 / m) * sum_error_1
+    #     history['theta0'].append(theta0)
+    #     history['theta1'].append(theta1)
+    # return theta0, theta1, history
 
 def denormalize_theta(norm_theta0, norm_theta1, diff, min_val):
     theta1 = norm_theta1 / diff
