@@ -2,10 +2,16 @@ import pandas as pd
 import numpy as np
 import os
 
+# === Hyperparameters ===
+LEARNING_RATE = 0.1
+ITERATIONS = 1000
+DATA_PATH = 'data.csv'
+# =======================
+
 def min_max_scaling(mileage):
     min_val = mileage.min()
-    max = mileage.max()
-    diff = max - min_val
+    max_val = mileage.max()
+    diff = max_val - min_val
     normalized = []
     for x in mileage:
         normalized.append((x - min_val) / (diff))
@@ -39,14 +45,14 @@ def denormalize_theta(norm_theta0, norm_theta1, diff, min_val):
     theta0 = norm_theta0 - theta1 * min_val
     return theta0, theta1
 
-data = pd.read_csv('data.csv')
+data = pd.read_csv(DATA_PATH)
 
 mileage = data['km']
 price = data['price']
 m = data.shape[0]
 normalized_mileage, diff, min_val = min_max_scaling(mileage)
 
-norm_theta0, norm_theta1 = calculate_theta(normalized_mileage, price, m, 0.1, 1000)
+norm_theta0, norm_theta1 = calculate_theta(normalized_mileage, price, m, LEARNING_RATE, ITERATIONS)
 theta0, theta1 = denormalize_theta(norm_theta0, norm_theta1, diff, min_val)
 
 if not os.path.exists('model'):
