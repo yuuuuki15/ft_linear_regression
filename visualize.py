@@ -12,7 +12,7 @@ def load_model():
 data = pd.read_csv('data.csv')
 theta0, theta1 = load_model()
 
-print(data.head())
+# print(data.head())
 
 x = data['km']
 y = data['price']
