@@ -3,6 +3,12 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 
+# === Hyperparameters ===
+LEARNING_RATE = 0.1
+ITERATIONS = 1000
+DATA_PATH = 'data.csv'
+# =======================
+
 def min_max_scaling(mileage):
     min_val = mileage.min()
     max_val = mileage.max()
@@ -120,15 +126,14 @@ def visualize(history, mileage, price, diff, min_val, iterations):
     plt.show()
 
 
-data = pd.read_csv('data.csv')
+data = pd.read_csv(DATA_PATH)
 mileage = data['km']
 price = data['price']
 m = data.shape[0]
 normalized_mileage, diff, min_val = min_max_scaling(mileage)
 
-iterations = 1000
 norm_theta0, norm_theta1, history = calculate_theta(
-    normalized_mileage, price, m, 0.1, iterations
+    normalized_mileage, price, m, LEARNING_RATE, ITERATIONS
 )
 theta0, theta1 = denormalize_theta(norm_theta0, norm_theta1, diff, min_val)
 
@@ -140,4 +145,4 @@ pd.DataFrame({'theta0': [theta0], 'theta1': [theta1]}).to_csv(
     'model/default.csv', index=False
 )
 
-visualize(history, mileage, price, diff, min_val, iterations)
+visualize(history, mileage, price, diff, min_val, ITERATIONS)
