@@ -95,7 +95,7 @@ MAE is easy and simple way. Lower is better.
 RMSE is more sensitive to outliers. Lower is better.
 
 R2 is suitable to understand the overall fit of the model to simple average baseline. Higher is better.
+This article is nice to understand R square: https://www.geeksforgeeks.org/machine-learning/python-coefficient-of-determination-r2-score/
 
 resources:
 https://medium.com/analytics-vidhya/mae-mse-rmse-coefficient-of-determination-adjusted-r-squared-which-metric-is-better-cd0326a5697e
-
