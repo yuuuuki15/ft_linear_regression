@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+import os
+from pandas.errors import ParserError, EmptyDataError
 
 def load_model():
     try:
@@ -24,10 +26,23 @@ def r2(predicted, actual):
     right = np.sum((avr - actual) ** 2)
     return 1 - (left / right)
 
-data = pd.read_csv('data.csv')
+if(os.path.exists("data.csv")):
+    try:
+        data = pd.read_csv("data.csv")
+    except(ParserError, EmptyDataError) as e:
+        print(f"Failed to read file: {e}")
+        exit()
+else:
+    print("data.csv doesn't exist.")
+    exit()
+
 theta0, theta1 = load_model()
-x = data['km']
-y = data['price']
+try:
+    x = pd.to_numeric(data['km'], errors="raise", downcast="float")
+    y = pd.to_numeric(data['price'], errors="raise", downcast="float")
+except:
+    print("Failed to parse data.")
+    exit()
 m = data.shape[0]
 predicted_data = estimate_price(x, theta0, theta1)
 

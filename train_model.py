@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import os
+from pandas.errors import ParserError, EmptyDataError
 
 # === Hyperparameters ===
 LEARNING_RATE = 0.1
@@ -45,10 +46,23 @@ def denormalize_theta(norm_theta0, norm_theta1, diff, min_val):
     theta0 = norm_theta0 - theta1 * min_val
     return theta0, theta1
 
-data = pd.read_csv(DATA_PATH)
+if(os.path.exists(DATA_PATH)):
+    try:
+        data = pd.read_csv(DATA_PATH)
+    except(ParserError, EmptyDataError) as e:
+        print(f"Failed to read file: {e}")
+        exit()
+else:
+    print(f"{DATA_PATH} doesn't exist.")
+    exit()
 
-mileage = data['km']
-price = data['price']
+try:
+    mileage = pd.to_numeric(data['km'], errors="raise", downcast="float")
+    price = pd.to_numeric(data['price'], errors="raise", downcast="float")
+except:
+    print("Failed to parse data.")
+    exit()
+
 m = data.shape[0]
 normalized_mileage, diff, min_val = min_max_scaling(mileage)
 

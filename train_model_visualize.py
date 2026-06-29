@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 import matplotlib.pyplot as plt
+from pandas.errors import ParserError, EmptyDataError
 
 # === Hyperparameters ===
 LEARNING_RATE = 0.1
@@ -125,8 +126,23 @@ def visualize(history, mileage, price, diff, min_val, iterations):
 
     plt.show()
 
+if(os.path.exists(DATA_PATH)):
+    try:
+        data = pd.read_csv(DATA_PATH)
+    except(ParserError, EmptyDataError) as e:
+        print(f"Failed to read file: {e}")
+        exit()
+else:
+    print(f"{DATA_PATH} doesn't exist.")
+    exit()
 
-data = pd.read_csv(DATA_PATH)
+try:
+    mileage = pd.to_numeric(data['km'], errors="raise", downcast="float")
+    price = pd.to_numeric(data['price'], errors="raise", downcast="float")
+except:
+    print("Failed to parse data.")
+    exit()
+
 mileage = data['km']
 price = data['price']
 m = data.shape[0]
